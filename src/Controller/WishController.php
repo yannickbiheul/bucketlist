@@ -27,11 +27,11 @@ class WishController extends AbstractController {
      * requirements={"id"="\d+"}, methods={"GET"})
      */
     public function detail(WishRepository $wishRepository, $id):Response {
-        $wish = $wishRepository->findBy($id);
+        $wish = $wishRepository->findOneBy(['id' => $id]);
         $titrePage = "Detail";
         return $this->render("wish/detail.html.twig", [
             'titre' => $titrePage,
-            'id' => $id
+            'wish' => $wish
         ]);
     }
 }

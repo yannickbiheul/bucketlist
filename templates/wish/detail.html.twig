@@ -1,11 +1,16 @@
 {% extends './base.html.twig' %}
 {% block title %}
-    {{ titre }}
+	{{ titre }}
 {% endblock %}
 
 {% block body %}
-    <h1 class='mt-5'>
-    {{ titre }}
-    <p>{{ id }}</p>
-    </h1>
+	<h1 class='mt-5'>
+		{{ wish.title }}
+	</h1>
+
+	<div class="container">
+        <p>Le {{ wish.dateCreated | date("d/m/Y")}}</p>
+        <span>{{ wish.author }}</span>
+        <p>{{ wish.description }}</p>
+    </div>
 {% endblock %}
