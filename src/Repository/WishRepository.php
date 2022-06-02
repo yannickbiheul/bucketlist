@@ -3,8 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Wish;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\Request;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Wish>
@@ -37,6 +38,23 @@ class WishRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function updateById($id, $title, $description, $author) {
+        $em = $this->getEntityManager();
+        $dql = "
+            UPDATE App\Entity\Wish w
+            SET w.id = :id, w.title = :title, w.description = :description, w.author = :author, w.isPublished = :isPublished, w.dateCreated = :dateCreated
+            WHERE w.id = :id
+            ";
+        $query = $em->createQuery($dql);
+        $query->setParameter('id', $id);
+        $query->setParameter('title', $title);
+        $query->setParameter('description', $description);
+        $query->setParameter('author', $author);
+        $query->setParameter('isPublished', true);
+        $query->setParameter('dateCreated', new \DateTime());
+        $query->execute();
     }
 
 //    /**

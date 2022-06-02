@@ -4,13 +4,10 @@
 {% endblock %}
 
 {% block body %}
-	<h1 class='mt-5'>
-		{{ wish.title }}
-	</h1>
-
-	<div class="container">
-        <p>Le {{ wish.dateCreated | date("d/m/Y")}}</p>
-        <span>{{ wish.author }}</span>
-        <p>{{ wish.description }}</p>
-    </div>
+    <h1 class='mt-5'>
+    {{ titre }}
+    </h1>
+    <p>{{ wish.description }}</p>
+    <p>Le {{ wish.dateCreated | date('d-m-Y') }} à {{ wish.dateCreated | date('H:i') }} par {{ wish.author }}</p>
+    <a type="button" href="/form-update/{{ wish.id }}" class="btn btn-primary">Modifier</a>
 {% endblock %}

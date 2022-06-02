@@ -14,11 +14,9 @@
 				<div class="card" style="width: 18rem;margin: 10px;">
 					<div class="card-body">
 						<h5 class="card-title">{{ wish.title }}</h5>
-						<h6 class="card-subtitle mb-2 text-muted">{{ wish.author }}</h6>
+						<h6 class="card-subtitle mb-2 text-muted">{{ wish.author }}, le {{ wish.dateCreated | date('d-m-Y') }} à {{ wish.dateCreated | date('H:i') }}</h6>
 						<p class="card-text">{{ wish.description }}</p>
-                        <span>Le {{ wish.dateCreated | date("d/m/Y")}}</span>
-                            <br>
-						<a href="{{ path('app_detail', {'id':wish.id}) }}">Détails</a>
+						<a href="/detail/{{ wish.id }}" class="card-link">Détails</a>
 					</div>
 				</div>
 			{% endfor %}
