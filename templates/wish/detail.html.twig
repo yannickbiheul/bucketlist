@@ -10,4 +10,5 @@
     <p>{{ wish.description }}</p>
     <p>Le {{ wish.dateCreated | date('d-m-Y') }} à {{ wish.dateCreated | date('H:i') }} par {{ wish.author }}</p>
     <a type="button" href="/form-update/{{ wish.id }}" class="btn btn-primary">Modifier</a>
+    <a type="button" href="/delete/{{ wish.id }}" class="btn btn-danger">Supprimer</a>
 {% endblock %}

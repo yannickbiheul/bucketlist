@@ -15,8 +15,7 @@
 					<div class="card-body">
 						<h5 class="card-title">{{ wish.title }}</h5>
 						<h6 class="card-subtitle mb-2 text-muted">{{ wish.author }}, le {{ wish.dateCreated | date('d-m-Y') }} à {{ wish.dateCreated | date('H:i') }}</h6>
-						<p class="card-text">{{ wish.description }}</p>
-						<a href="/detail/{{ wish.id }}" class="card-link">Détails</a>
+						<a type="button" href="/detail/{{ wish.id }}" class="btn btn-success card-link">Détails</a>
 					</div>
 				</div>
 			{% endfor %}

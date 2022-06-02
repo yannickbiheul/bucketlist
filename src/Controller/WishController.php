@@ -88,4 +88,12 @@ class WishController extends AbstractController
         $wishRepo->updateById($id, $title, $description, $author);
         return $this->redirect("/detail/$id");
     }
+
+    /**
+     * @Route("/delete/{id}", name="app_delete")
+     */
+    public function delete(WishRepository $wishRepo, $id) {
+        $wishRepo->delete($id);
+        return $this->redirectToRoute("app_list");
+    }
 }

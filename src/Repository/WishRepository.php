@@ -46,7 +46,7 @@ class WishRepository extends ServiceEntityRepository
             UPDATE App\Entity\Wish w
             SET w.id = :id, w.title = :title, w.description = :description, w.author = :author, w.isPublished = :isPublished, w.dateCreated = :dateCreated
             WHERE w.id = :id
-            ";
+        ";
         $query = $em->createQuery($dql);
         $query->setParameter('id', $id);
         $query->setParameter('title', $title);
@@ -54,6 +54,17 @@ class WishRepository extends ServiceEntityRepository
         $query->setParameter('author', $author);
         $query->setParameter('isPublished', true);
         $query->setParameter('dateCreated', new \DateTime());
+        $query->execute();
+    }
+
+    public function delete($id) {
+        $em = $this->getEntityManager();
+        $dql = "
+            DELETE FROM App\Entity\Wish w
+            WHERE w.id = :id
+        ";
+        $query = $em->createQuery($dql);
+        $query->setParameter('id', $id);
         $query->execute();
     }
 
