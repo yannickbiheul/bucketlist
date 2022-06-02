@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use DateTime;
 use App\Entity\Wish;
 use App\Repository\WishRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,10 +33,10 @@ class WishController extends AbstractController
     public function detail(WishRepository $wishRepository, $id): Response
     {
         $wish = $wishRepository->find($id);
-        $titrePage = "Detail";
+        $titrePage = $wish->getTitle();
         return $this->render("wish/detail.html.twig", [
             'titre' => $titrePage,
-            'id' => $id
+            'wish' => $wish
         ]);
     }
 
@@ -45,10 +46,14 @@ class WishController extends AbstractController
     public function create(Request $request, WishRepository $wishRepo)
     {
         if ($request->request->get('title') != null) {
+            $dateObject = new DateTime();
+            $date = $dateObject->format('Y-m-d H:i:s');
             $wish = new Wish();
             $wish->setTitle($request->request->get('title'));
             $wish->setDescription($request->request->get('description'));
             $wish->setAuthor($request->request->get('author'));
+            $wish->setIsPublished(true);
+            $wish->setDateCreated(new \DateTime());
             $wishRepo->add($wish, true);
 
             return $this->redirectToRoute('app_list');
@@ -59,5 +64,28 @@ class WishController extends AbstractController
         return $this->render("wish/create.html.twig", [
             'titre' => $titrePage,
         ]);
+    }
+
+    /**
+     * @Route("/form-update/{id}", name="app_form_update")
+     */
+    public function formUpdate(WishRepository $wishRepo, $id) {
+        $wish = $wishRepo->find($id);
+        $titrePage = "Modifier " . $wish->getTitle();
+        return $this->render("wish/update.html.twig", [
+            'titre' => $titrePage,
+            'wish' => $wish
+        ]);
+    }
+
+    /**
+     * @Route("/update/{id}", name="app_update")
+     */
+    public function update(Request $request, WishRepository $wishRepo, $id) {
+        $title = $request->request->get('title');
+        $description = $request->request->get('description');
+        $author = $request->request->get('author');
+        $wishRepo->updateById($id, $title, $description, $author);
+        return $this->redirect("/detail/$id");
     }
 }

@@ -6,6 +6,8 @@
 {% block body %}
     <h1 class='mt-5'>
     {{ titre }}
-    <p>{{ id }}</p>
     </h1>
+    <p>{{ wish.description }}</p>
+    <p>Le {{ wish.dateCreated | date('d-m-Y') }} à {{ wish.dateCreated | date('H:i') }} par {{ wish.author }}</p>
+    <a type="button" href="/form-update/{{ wish.id }}" class="btn btn-primary">Modifier</a>
 {% endblock %}
