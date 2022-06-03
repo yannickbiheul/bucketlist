@@ -49,9 +49,9 @@ class WishController extends AbstractController
             $dateObject = new DateTime();
             $date = $dateObject->format('Y-m-d H:i:s');
             $wish = new Wish();
-            $wish->setTitle($request->request->get('title'));
-            $wish->setDescription($request->request->get('description'));
-            $wish->setAuthor($request->request->get('author'));
+            $wish->setTitle(htmlentities($request->request->get('title')));
+            $wish->setDescription(htmlentities($request->request->get('description')));
+            $wish->setAuthor(htmlentities($request->request->get('author')));
             $wish->setIsPublished(true);
             $wish->setDateCreated(new \DateTime());
             $wishRepo->add($wish, true);
@@ -82,9 +82,9 @@ class WishController extends AbstractController
      * @Route("/update/{id}", name="app_update")
      */
     public function update(Request $request, WishRepository $wishRepo, $id) {
-        $title = $request->request->get('title');
-        $description = $request->request->get('description');
-        $author = $request->request->get('author');
+        $title = htmlentities($request->request->get('title'));
+        $description = htmlentities($request->request->get('description'));
+        $author = htmlentities($request->request->get('author'));
         $wishRepo->updateById($id, $title, $description, $author);
         return $this->redirect("/detail/$id");
     }

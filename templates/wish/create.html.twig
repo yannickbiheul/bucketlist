@@ -4,30 +4,30 @@
 {% endblock %}
 
 {% block body %}
-	<h1 class='mt-5'>
+	<h1 class='mt-5' id="titre">
 		{{ titre }}
 	</h1>
 
 	<div class="container mt-5">
 		<form action="{{ path('app_create') }}" method="POST">
 			<div class="mb-3 col-4 offset-4">
-				<label for="title" class="form-label">Title</label>
-				<input type="text" class="form-control" id="title" name="title">
+				<label for="title" class="form-label">Title*</label>
+				<input type="text" class="form-control" id="title" name="title" required>
 			</div>
 			<div class="mb-3 col-4 offset-4">
 				<label for="description" class="form-label">Description</label>
 				<textarea class="form-control" id="description" name="description" rows="3"></textarea>
 			</div>
 			<div class="mb-3 col-4 offset-4">
-				<label for="author" class="form-label">Author</label>
-				<input type="text" class="form-control" id="author" name="author">
+				<label for="author" class="form-label">Author*</label>
+				<input type="text" class="form-control" id="author" name="author" required>
 			</div>
             {# <div class="mb-3 col-4 offset-4">
 				<label for="date" class="form-label">Date</label>
 				<input type="date" class="form-control" id="date" name="date">
 			</div> #}
-			<button type="submit" class="btn btn-primary">Submit</button>
+			<button type="submit" class="btn btn-primary" id="submit">Submit</button>
 		</form>
 	</div>
-
+<script src="{{ asset('js/script.js') }}"></script>
 {% endblock %}
