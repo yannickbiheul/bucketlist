@@ -40,7 +40,8 @@ class WishRepository extends ServiceEntityRepository
         }
     }
 
-    public function updateById($id, $title, $description, $author) {
+    public function updateById($id, $title, $description, $author)
+    {
         $em = $this->getEntityManager();
         $dql = "
             UPDATE App\Entity\Wish w
@@ -57,7 +58,8 @@ class WishRepository extends ServiceEntityRepository
         $query->execute();
     }
 
-    public function delete($id) {
+    public function delete($id)
+    {
         $em = $this->getEntityManager();
         $dql = "
             DELETE FROM App\Entity\Wish w
@@ -68,35 +70,37 @@ class WishRepository extends ServiceEntityRepository
         $query->execute();
     }
 
-    public function showAll() {
+    public function showAll()
+    {
         $em = $this->getEntityManager();
-        $dql = "SELECT w FROM App\Entity\Wish w JOIN App\Entity\Category c";
+        //$dql = "SELECT w FROM App\Entity\Wish w JOIN App\Entity\Category c"; // pas bon
+        $dql = "SELECT w,c FROM App\Entity\Wish w INNER JOIN w.category c";
         $query = $em->createQuery($dql);
         return $query->getResult();
     }
 
-//    /**
-//     * @return Wish[] Returns an array of Wish objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('w')
-//            ->andWhere('w.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('w.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    //    /**
+    //     * @return Wish[] Returns an array of Wish objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('w')
+    //            ->andWhere('w.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('w.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
 
-//    public function findOneBySomeField($value): ?Wish
-//    {
-//        return $this->createQueryBuilder('w')
-//            ->andWhere('w.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    public function findOneBySomeField($value): ?Wish
+    //    {
+    //        return $this->createQueryBuilder('w')
+    //            ->andWhere('w.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }
