@@ -2,98 +2,91 @@
 
 namespace App\Controller;
 
-use DateTime;
 use App\Entity\Wish;
+use App\Form\WishType;
 use App\Repository\WishRepository;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+/**
+ * @Route("/wish")
+ */
 class WishController extends AbstractController
 {
-
     /**
-     * @Route("/list", name="app_list")
+     * @Route("/", name="app_wish_index", methods={"GET"})
      */
-    public function list(WishRepository $wishRepository): Response
+    public function index(WishRepository $wishRepository): Response
     {
-        $wishs = $wishRepository->findAll();
-        $titrePage = "List";
-        return $this->render("wish/list.html.twig", [
-            'titre' => $titrePage,
-            'wishs' => $wishs
+        return $this->render('wish/index.html.twig', [
+            'wishes' => $wishRepository->findAll(),
         ]);
     }
 
     /**
-     * @Route("/detail/{id}", name="app_detail", 
-     * requirements={"id"="\d+"}, methods={"GET"})
+     * @Route("/new", name="app_wish_new", methods={"GET", "POST"})
      */
-    public function detail(WishRepository $wishRepository, $id): Response
+    public function new(Request $request, WishRepository $wishRepository): Response
     {
-        $wish = $wishRepository->find($id);
-        $titrePage = $wish->getTitle();
-        return $this->render("wish/detail.html.twig", [
-            'titre' => $titrePage,
-            'wish' => $wish
-        ]);
-    }
+        $wish = new Wish();
+        $form = $this->createForm(WishType::class, $wish);
+        $form->handleRequest($request);
 
-    /**
-     * @Route("/create", name="app_create")
-     */
-    public function create(Request $request, WishRepository $wishRepo)
-    {
-        if ($request->request->get('title') != null) {
-            $dateObject = new DateTime();
-            $date = $dateObject->format('Y-m-d H:i:s');
-            $wish = new Wish();
-            $wish->setTitle(htmlentities($request->request->get('title')));
-            $wish->setDescription(htmlentities($request->request->get('description')));
-            $wish->setAuthor(htmlentities($request->request->get('author')));
-            $wish->setIsPublished(true);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $wish->setIsPublished("true");
             $wish->setDateCreated(new \DateTime());
-            $wishRepo->add($wish, true);
+            $wishRepository->add($wish, true);
 
-            return $this->redirectToRoute('app_list');
+            return $this->redirectToRoute('app_wish_index', [], Response::HTTP_SEE_OTHER);
         }
 
-
-        $titrePage = "Create Wish";
-        return $this->render("wish/create.html.twig", [
-            'titre' => $titrePage,
+        return $this->renderForm('wish/new.html.twig', [
+            'wish' => $wish,
+            'form' => $form,
         ]);
     }
 
     /**
-     * @Route("/form-update/{id}", name="app_form_update")
+     * @Route("/{id}", name="app_wish_show", methods={"GET"})
      */
-    public function formUpdate(WishRepository $wishRepo, $id) {
-        $wish = $wishRepo->find($id);
-        $titrePage = "Modifier " . $wish->getTitle();
-        return $this->render("wish/update.html.twig", [
-            'titre' => $titrePage,
-            'wish' => $wish
+    public function show(Wish $wish): Response
+    {
+        return $this->render('wish/show.html.twig', [
+            'wish' => $wish,
         ]);
     }
 
     /**
-     * @Route("/update/{id}", name="app_update")
+     * @Route("/{id}/edit", name="app_wish_edit", methods={"GET", "POST"})
      */
-    public function update(Request $request, WishRepository $wishRepo, $id) {
-        $title = htmlentities($request->request->get('title'));
-        $description = htmlentities($request->request->get('description'));
-        $author = htmlentities($request->request->get('author'));
-        $wishRepo->updateById($id, $title, $description, $author);
-        return $this->redirect("/detail/$id");
+    public function edit(Request $request, Wish $wish, WishRepository $wishRepository): Response
+    {
+        $form = $this->createForm(WishType::class, $wish);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $wishRepository->add($wish, true);
+
+            return $this->redirectToRoute('app_wish_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('wish/edit.html.twig', [
+            'wish' => $wish,
+            'form' => $form,
+        ]);
     }
 
     /**
-     * @Route("/delete/{id}", name="app_delete")
+     * @Route("/{id}", name="app_wish_delete", methods={"POST"})
      */
-    public function delete(WishRepository $wishRepo, $id) {
-        $wishRepo->delete($id);
-        return $this->redirectToRoute("app_list");
+    public function delete(Request $request, Wish $wish, WishRepository $wishRepository): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$wish->getId(), $request->request->get('_token'))) {
+            $wishRepository->remove($wish, true);
+        }
+
+        return $this->redirectToRoute('app_wish_index', [], Response::HTTP_SEE_OTHER);
     }
 }

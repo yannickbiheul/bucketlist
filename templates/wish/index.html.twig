@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Wish index
+{% endblock %}
+
+{% block body %}
+	<h1>Wish index</h1>
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Title</th>
+				<th>Description</th>
+				<th>Author</th>
+				<th>Category</th>
+				<th>IsPublished</th>
+				<th>DateCreated</th>
+				<th>actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for wish in wishes %}
+				<tr>
+					<td>{{ wish.id }}</td>
+					<td>{{ wish.title }}</td>
+					<td>{{ wish.description }}</td>
+					<td>{{ wish.author }}</td>
+					{% if wish.category == NULL %}
+						<td>null</td>
+					{% else %}
+						<td>{{ wish.category.name }}</td>
+					{% endif %}
+					<td>{{ wish.isPublished ? 'Yes' : 'No' }}</td>
+					<td>{{ wish.dateCreated ? wish.dateCreated|date('Y-m-d H:i:s') : '' }}</td>
+					<td>
+						<a href="{{ path('app_wish_show', {'id': wish.id}) }}" class="btn btn-primary">show</a>
+						<a href="{{ path('app_wish_edit', {'id': wish.id}) }}" class="btn btn-success">edit</a>
+						<a href="{{ path('app_wish_delete', {'id': wish.id}) }}" class="btn btn-danger">Delete</a>
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="7">no records found</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+	<a href="{{ path('app_wish_new') }}">Create new</a>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Wish
+{% endblock %}
+
+{% block body %}
+
+	<div class="container">
+		<div class="row text-center mt-5">
+			<h1>Create new Wish</h1>
+		</div>
+
+		<div class="row">
+			<div class="col-4 offset-4">
+				{{ include('wish/_form.html.twig') }}
+
+				<a href="{{ path('app_wish_index') }}" class="btn btn-primary mt-3">back to list</a>
+			</div>
+		</div>
+
+	</div>
+
+
+{% endblock %}
