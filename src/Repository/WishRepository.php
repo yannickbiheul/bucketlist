@@ -68,6 +68,13 @@ class WishRepository extends ServiceEntityRepository
         $query->execute();
     }
 
+    public function showAll() {
+        $em = $this->getEntityManager();
+        $dql = "SELECT w FROM App\Entity\Wish w JOIN App\Entity\Category c";
+        $query = $em->createQuery($dql);
+        return $query->getResult();
+    }
+
 //    /**
 //     * @return Wish[] Returns an array of Wish objects
 //     */

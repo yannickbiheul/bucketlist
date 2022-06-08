@@ -43,9 +43,10 @@ class Wish
     private $dateCreated;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="wishes")
+     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="wishes", fetch="EAGER")
      */
     private $category;
+    // fetch="EAGER" permet de créer une seule requête (JOIN), tandis que fetch="LAZY" (par défaut) envoie une requête par catégorie.
 
     public function getId(): ?int
     {
