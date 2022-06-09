@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Wish;
 use App\Form\WishType;
 use App\Repository\WishRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,6 +27,7 @@ class WishController extends AbstractController
     }
 
     /**
+     * @isGranted("ROLE_USER")
      * @Route("/new", name="app_wish_new", methods={"GET", "POST"})
      */
     public function new(Request $request, WishRepository $wishRepository): Response
@@ -64,6 +66,7 @@ class WishController extends AbstractController
     }
 
     /**
+     * @isGranted("ROLE_ADMIN")
      * @Route("/{id}/edit", name="app_wish_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, Wish $wish, WishRepository $wishRepository): Response
@@ -89,6 +92,7 @@ class WishController extends AbstractController
     }
 
     /**
+     * @isGranted("ROLE_ADMIN")
      * @Route("/{id}", name="app_wish_delete", methods={"POST"})
      */
     public function delete(Request $request, Wish $wish, WishRepository $wishRepository): Response
