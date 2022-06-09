@@ -30,6 +30,11 @@ class WishController extends AbstractController
      */
     public function new(Request $request, WishRepository $wishRepository): Response
     {
+
+        if (!$this->isGranted("ROLE_USER")) {
+            return $this->redirectToRoute("app_login");
+        }
+
         $wish = new Wish();
         $form = $this->createForm(WishType::class, $wish);
         $form->handleRequest($request);
@@ -63,6 +68,11 @@ class WishController extends AbstractController
      */
     public function edit(Request $request, Wish $wish, WishRepository $wishRepository): Response
     {
+
+        if (!$this->isGranted("ROLE_ADMIN")) {
+            return $this->redirectToRoute("app_wish_index");
+        }
+
         $form = $this->createForm(WishType::class, $wish);
         $form->handleRequest($request);
 
@@ -83,6 +93,11 @@ class WishController extends AbstractController
      */
     public function delete(Request $request, Wish $wish, WishRepository $wishRepository): Response
     {
+
+        if (!$this->isGranted("ROLE_ADMIN")) {
+            return $this->redirectToRoute("app_wish_index");
+        }
+
         if ($this->isCsrfTokenValid('delete'.$wish->getId(), $request->request->get('_token'))) {
             $wishRepository->remove($wish, true);
         }
